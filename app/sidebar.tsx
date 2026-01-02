@@ -79,7 +79,7 @@ export default function Sidebar() {
       const closedTarget = -(width - 1);
       target = Start.value ? openTarget : closedTarget;
     } else if (XY.value.x > CENTER + DEAD_ZONE) {
-      target = Start.value ? 0 : 81; 
+      target = Start.value ? -10 : 81; 
     } else {
       return {};
     }
@@ -112,7 +112,8 @@ const styles = StyleSheet.create({
   floatobj : {
     width: 30 ,
     height : 30,
-    backgroundColor: "green",
+    backgroundColor: "black",
+    opacity : 0.4,
     zIndex : 7,
     position:'absolute',
     borderRadius : 10,
