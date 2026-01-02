@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { clamp, Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { clamp, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import Animated from 'react-native-reanimated';
 
 export default function Sidebar() {
   const { width } = Dimensions.get('screen');
   const XY = useSharedValue({x:0,y:0});
   const Start = useSharedValue(false);
-  const showFloat = useSharedValue(false);
+  const showFloat = useSharedValue(true);
   const tap =  Gesture.Tap().onEnd(()=>{
     if(Start.value){
         Start.value = false
