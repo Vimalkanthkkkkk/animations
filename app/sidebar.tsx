@@ -1,46 +1,52 @@
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { clamp, Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import Animated from 'react-native-reanimated';
 
 export default function Sidebar() {
   const { width } = Dimensions.get('screen');
   const XY = useSharedValue({x:0,y:0});
   const Start = useSharedValue(false);
+  const showFloat = useSharedValue(false);
   const tap =  Gesture.Tap().onEnd(()=>{
     if(Start.value){
         Start.value = false
     }
   });
+  const DEAD_ZONE = 30;
+  const PANEL_WIDTH = 80; 
   const CENTER = width/2;
   const childGesture =  Gesture.Pan()
   .onStart((e)=>{
-    //console.log(e.absoluteX);
     XY.value = {x:e.absoluteX , y:e.absoluteY};
     if(Start.value){
         Start.value = false
     }
+    showFloat.value = false
   })
   .onUpdate((e)=>{
-    //console.log(e.absoluteX);
     XY.value = {x:e.absoluteX , y:e.absoluteY};
-  });
+  })
+  .onEnd(()=>{
+    showFloat.value = true
+  })
 
-  const pan = Gesture.Pan()
-    .activeOffsetX([-10 , 0])
+  const pan = Gesture.Pan().activeOffsetX([-10 , 15])
     .onStart((e)=>{
+        XY.value = {x: e.absoluteX, y: e.absoluteY};
         Start.value = true;
     })
+
   const translate = useAnimatedStyle(()=>{
     return {
         transform : [
             {
-                translateX : XY.value.x - 15
+                translateX : clamp(XY.value.x - 15 , 50 , 350 )
             },
             {
-                translateY:XY.value.y
+                translateY: clamp(XY.value.y , 50 , 850)
             }
-        ]
+        ] ,
     }
   })
 
@@ -48,10 +54,10 @@ export default function Sidebar() {
     return {
         transform : [
             {
-                translateY:XY.value.y - 25
+                translateY:clamp(XY.value.y - 25 , 50 , 750)
             }
-        ]
-    }
+        ],
+        right : XY.value.x < CENTER ? width - 20 : 10    } 
   })
 
   const opacity = useAnimatedStyle(()=>{
@@ -59,19 +65,34 @@ export default function Sidebar() {
         opacity : Start.value ? 0 : 1 ,
     }
   })
-  const translateX = useAnimatedStyle(()=>{
-    return {
-        transform: [
-            {translateX : Start.value ? withTiming(0 , {duration : 300}) : withTiming(81 , {duration : 100})}
-        ],
-    };
-  });   
 
+  const Floatopacity = useAnimatedStyle(()=>{
+    return {
+        opacity : showFloat.value ? 0 : 1,
+    }
+  })
+
+  const translateX = useAnimatedStyle(() => {
+    let target;
+    if (XY.value.x < CENTER) {      
+      const openTarget = -(width - PANEL_WIDTH - 10); 
+      const closedTarget = -(width - 1);
+      target = Start.value ? openTarget : closedTarget;
+    } else if (XY.value.x > CENTER + DEAD_ZONE) {
+      target = Start.value ? 0 : 81; 
+    } else {
+      return {};
+    }
+    return {
+      transform: [{ translateX: withTiming(target, { duration: 220 }) }],
+      opacity: Start.value ? 1 : 0, 
+    };
+  });
   return (
     <GestureHandlerRootView>
         <GestureDetector gesture={tap}>
             <View style={styles.item}>
-                <Text>Swipe the Right Edge</Text>
+                <Text>Swipe that!!!</Text>
             </View>
         </GestureDetector>
         <GestureDetector gesture={pan}>
@@ -82,7 +103,7 @@ export default function Sidebar() {
                 <View style={[styles.notch]}></View>
             </GestureDetector>
         </Animated.View>
-        <Animated.View style={[styles.floatobj , translate]}></Animated.View>
+        <Animated.View style={[ styles.floatobj , translate , Floatopacity]}></Animated.View>
     </GestureHandlerRootView>
   );
 }
@@ -128,8 +149,6 @@ const styles = StyleSheet.create({
     zIndex :6,
     overflow: "hidden", 
     width : 10,
-    top: 0 ,
-    right : 10 ,
   },
   item: {
     display : "flex",
