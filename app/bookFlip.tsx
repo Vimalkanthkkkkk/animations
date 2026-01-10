@@ -1,8 +1,9 @@
 import { View, StyleSheet , Dimensions } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
-import Pagetwo from './pagetwo';
+import Pagetwo from './page';
+import Page from './page';
 
-export default function Final() {
+export default function BookFlip() {
   const { width } = Dimensions.get('screen');
   const CARD_WIDTH = 150;
   const CARD_HEIGHT = 200;
@@ -108,12 +109,12 @@ export default function Final() {
               right:0,
               pointerEvents:'none',
             }}>
-              <Pagetwo colors={["grey"  , "blue"]} index={0} value={offsetY} leftZ={pageZ[0].L} rightZ={pageZ[0].R} ></Pagetwo>
-              <Pagetwo colors={["purple"  , "orange"]} index={1} value={offsetY} leftZ={pageZ[1].L} rightZ={pageZ[1].R} ></Pagetwo>
-              <Pagetwo colors={["brown"  , "red"]} index={2} value={offsetY} leftZ={pageZ[2].L} rightZ={pageZ[2].R} ></Pagetwo>
-              <Pagetwo colors={["violet"  , "green"]} index={3} value={offsetY} leftZ={pageZ[3].L} rightZ={pageZ[3].R} ></Pagetwo>
-              <Pagetwo colors={["lime"  , "pink"]} index={4} value={offsetY} leftZ={pageZ[4].L} rightZ={pageZ[4].R} ></Pagetwo>
-              <Pagetwo colors={["aqua"  , "yellow"]} index={5} value={offsetY} leftZ={pageZ[5].L} rightZ={pageZ[5].R} ></Pagetwo>
+              <Page colors={["grey"  , "blue"]} index={0} value={offsetY} leftZ={pageZ[0].L} rightZ={pageZ[0].R} ></Page>
+              <Page colors={["purple"  , "orange"]} index={1} value={offsetY} leftZ={pageZ[1].L} rightZ={pageZ[1].R} ></Page>
+              <Page colors={["brown"  , "red"]} index={2} value={offsetY} leftZ={pageZ[2].L} rightZ={pageZ[2].R} ></Page>
+              <Page colors={["violet"  , "green"]} index={3} value={offsetY} leftZ={pageZ[3].L} rightZ={pageZ[3].R} ></Page>
+              <Page colors={["lime"  , "pink"]} index={4} value={offsetY} leftZ={pageZ[4].L} rightZ={pageZ[4].R} ></Page>
+              <Page colors={["aqua"  , "yellow"]} index={5} value={offsetY} leftZ={pageZ[5].L} rightZ={pageZ[5].R} ></Page>
           </Animated.View>
     </View>
   );
