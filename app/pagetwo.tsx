@@ -5,6 +5,7 @@ import Animated, {
   SharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+
 export default function Pagetwo({ colors, index, value , leftZ , rightZ }: { colors: string[], index: number, value: SharedValue<number> ,  leftZ: SharedValue<number> , rightZ: SharedValue<number>}) {
   const CARD_WIDTH = 150;
   const CARD_HEIGHT = 200;
