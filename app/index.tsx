@@ -10,6 +10,12 @@ export default function Home() {
         <Link href="/sidebar" style={styles.item}>
             <Text style={styles.item}>Sidebar</Text>
         </Link>
+        <Link href="/practice" style={styles.item}>
+            <Text style={styles.item}>Practice</Text>
+        </Link>
+        <Link href="/final" style={styles.item}>
+            <Text style={styles.item}>Final</Text>
+        </Link>
     </View>
   );
 }
